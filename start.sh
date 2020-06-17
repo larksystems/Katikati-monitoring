@@ -1,5 +1,6 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
+
 if [ $# -ne 2 ]; then
     echo "Usage: $0 session_name path/to/crypto/token/file"
     exit 1

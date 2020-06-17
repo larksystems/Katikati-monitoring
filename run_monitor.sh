@@ -1,12 +1,12 @@
 #!/bin/bash
 set -e
 
-# Run a monitor driver
+# Run a the system_metrics_monitor.sh in a loop and log its output.
 # If it crashes, wait 5 min, then restart the monitor driver
 #
-# Usage: run_driver.sh <monitor-name> ... monitor args here ...
+# Usage: run_monitor.sh <session-name> ... monitor args here ...
 #
-# For example: run_driver.sh kk_monitor.sh path/to/crypto/token
+# For example: run_monitor.sh kk_monitoring path/to/crypto/token
 
 if [ $# -ne 2 ]; then
     echo "Usage: $0 session_name path/to/crypto/token/file"
