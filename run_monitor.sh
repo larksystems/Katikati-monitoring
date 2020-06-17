@@ -58,7 +58,7 @@ while true; do
   set +e
   # The pipe hides the exit code.
   # See https://unix.stackexchange.com/questions/14270/get-exit-status-of-process-thats-piped-to-another
-  pipenv run python "system_metrics_monitor.py" "$CRYPTO_TOKEN_FILE" 2>&1 | tee -a "$LOGFILE"
+  pipenv run python system_metrics_monitor.py "$CRYPTO_TOKEN_FILE" 2>&1 | tee -a "$LOGFILE"
   MONITOR_EXIT_CODE=${PIPESTATUS[0]}
   set -e
   echo "=== system_metrics_monitor.py has terminated with exit code $MONITOR_EXIT_CODE" | tee -a "$LOGFILE"
