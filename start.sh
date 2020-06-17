@@ -18,7 +18,7 @@ case "$SCREEN_LIST" in
     ;;
   *)
     echo "starting $SESSION_NAME"
-    screen -d -m -S $SESSION_NAME "$MONITORING_DIR/run_driver.sh" "$@"
+    screen -d -m -S $SESSION_NAME "$MONITORING_DIR/run_monitor.sh" "$@"
     echo "started"
     ;;
 esac
