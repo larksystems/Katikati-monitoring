@@ -53,8 +53,11 @@ def get_system_metrics():
 
 
 def publish_metrics_to_firestore(metrics):
-    firebase_client.collection(COLLECTION).document(metrics['datetime']).set(metrics)
-    log.info("Successfully published metrics to firebase {} collection".format(COLLECTION))
+    try:
+        firebase_client.collection(COLLECTION).document(metrics['datetime']).set(metrics)
+        log.info("Successfully published metrics to firebase {} collection".format(COLLECTION))
+    except Exception as e:
+        log.error(f"Unable to publish metrics due to {e}")
 
 
 if __name__ == '__main__':
