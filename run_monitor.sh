@@ -8,7 +8,7 @@ set -e
 #
 # For example: run_monitor.sh kk_monitoring path/to/crypto/token
 
-if [ $# -ne 2 ]; then
+if [ $# -lt 2 ]; then
     echo "Usage: $0 session_name path/to/crypto/token/file"
     exit 1
 fi
