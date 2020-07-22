@@ -62,7 +62,7 @@ def publish_metrics_to_firestore(metrics):
 
 def publish_metrics_to_firestore_multi_systems(metrics):
     try:
-        hostname = os.uname()[1]
+        hostname = os.uname()[1].lower()
         collection_path = f"systems/{hostname}/metrics"
         firebase_client.collection(collection_path).document(metrics['datetime']).set(metrics)
         log.info("Successfully published metrics to firebase {} collection".format(collection_path))
