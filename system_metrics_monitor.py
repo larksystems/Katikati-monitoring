@@ -1,6 +1,7 @@
 import argparse
 import datetime
 import firebase_admin
+import os
 import psutil
 import sys
 import threading
@@ -12,7 +13,6 @@ from core_data_modules.logging import Logger
 log = Logger(__name__)
 firebase_client = None
 
-COLLECTION = 'pipeline_system_metrics' #name of the firebase collections to store metrics
 DEFAULT_INTERVAL = 600 # wait interval between each set of metric readings in seconds
 
 def init_firebase_client(CRYPTO_TOKEN_PATH):
@@ -54,8 +54,18 @@ def get_system_metrics():
 
 def publish_metrics_to_firestore(metrics):
     try:
-        firebase_client.collection(COLLECTION).document(metrics['datetime']).set(metrics)
-        log.info("Successfully published metrics to firebase {} collection".format(COLLECTION))
+        collection_path = 'pipeline_system_metrics'
+        firebase_client.collection(collection_path).document(metrics['datetime']).set(metrics)
+        log.info("Successfully published metrics to firebase {} collection".format(collection_path))
+    except Exception as e:
+        log.error(f"Unable to publish metrics due to {e}")
+
+def publish_metrics_to_firestore_multi_systems(metrics):
+    try:
+        hostname = os.uname()[1]
+        collection_path = f"systems/{hostname}/metrics"
+        firebase_client.collection(collection_path).document(metrics['datetime']).set(metrics)
+        log.info("Successfully published metrics to firebase {} collection".format(collection_path))
     except Exception as e:
         log.error(f"Unable to publish metrics due to {e}")
 
@@ -64,6 +74,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Retrieve system metrics i.e cpu utilization, memory & disk usage')
     parser.add_argument("crypto_token_file",
                         help="path to Firebase crypto token file")
+    parser.add_argument("--multi-system", action="store_true",
+                        help="whether to store the data in a sub-collection for the current system")
 
     def _usage_and_exit(error_message):
         print(error_message)
@@ -79,6 +91,9 @@ if __name__ == '__main__':
 
     while True:
         metrics = get_system_metrics()
-        publish_metrics_to_firestore(metrics)
+        if args.multi_system:
+            publish_metrics_to_firestore_multi_systems(metrics)
+        else:
+            publish_metrics_to_firestore(metrics)
         log.info('Sleeping...')
         time.sleep(DEFAULT_INTERVAL)
