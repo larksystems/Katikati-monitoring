@@ -83,7 +83,7 @@ if __name__ == '__main__':
         parser.print_help()
         exit(1)
 
-    if len(sys.argv) != 2:
+    if len(sys.argv) < 2:
         _usage_and_exit("Wrong number of arguments")
     args = parser.parse_args(sys.argv[1:])
 

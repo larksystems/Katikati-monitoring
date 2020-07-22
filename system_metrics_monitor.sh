@@ -4,8 +4,8 @@ set -e
 echo "starting   : $0"
 echo "arguments  : $@"
 
-if [ $# -ne 1 ]; then
-    echo "Usage: $0 path/to/crypto/token/file"
+if [ $# -lt 1 ]; then
+    echo "Usage: $0 path/to/crypto/token/file [optional args]"
     exit 1
 fi
 
@@ -17,6 +17,7 @@ if [ ! -f "$CRYPTO_TOKEN" ]; then
   echo "could not find CRYPTO_TOKEN: $CRYPTO_TOKEN"
   exit 1
 fi
+shift
 
 cd "$(dirname "$CRYPTO_TOKEN")"
 CRYPTO_TOKEN_DIR="$(pwd)"
@@ -24,4 +25,4 @@ CRYPTO_TOKEN_FILENAME="$(basename "$CRYPTO_TOKEN")"
 CRYPTO_TOKEN_FILE="$CRYPTO_TOKEN_DIR/$CRYPTO_TOKEN_FILENAME"
 
 cd "$MONITORING_DIR"
-pipenv run python -u system_metrics_monitor.py "$CRYPTO_TOKEN_FILE"
+pipenv run python -u system_metrics_monitor.py "$CRYPTO_TOKEN_FILE" "$@"
