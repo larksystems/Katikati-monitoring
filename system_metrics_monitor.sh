@@ -24,4 +24,4 @@ CRYPTO_TOKEN_FILENAME="$(basename "$CRYPTO_TOKEN")"
 CRYPTO_TOKEN_FILE="$CRYPTO_TOKEN_DIR/$CRYPTO_TOKEN_FILENAME"
 
 cd "$MONITORING_DIR"
-pipenv run python system_metrics_monitor.py "$CRYPTO_TOKEN_FILE"
+pipenv run python -u system_metrics_monitor.py "$CRYPTO_TOKEN_FILE"
